@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Schooling Reopening Calculator</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <form id="reopenForm" action="">
+      <fieldset>
+        <legend>Input Class Size</legend>
+          <p>
+            <label for="cohortLimit">Limit Cohort Size:</label>
+            <input id="cohortLimit" name="cohortLimit" type="number" />
+          </p> 
+
+          <p>
+            <label for="classA">Class A:</label>
+            <input id="classA" name="classA" type="number" />
+          </p>  
+
+          <p>
+            <input type="submit" value="Caculate Cohort Sizes" />
+          </p>
+
+          <!-- <p>
+            <label for="cohortSizes">Cohort Sizes:</label>
+            <input id="cohortSizes" name="cohortSizes" />
+	        </p> -->
+
+          <h1>Cohort Sizes:</h1>
+          <p id="cohortSizes">
+            
+          </p>
+      </fieldset>
+    </form>
+
+    </form>
+    <script src="script.js"></script>
+  </body>
+</html>
