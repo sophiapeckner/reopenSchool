@@ -1,6 +1,7 @@
+// CREDIT:
+// https://www.sitepoint.com/community/t/math-formula-input-form/6956/3
 
 var classAssignments = [];
-
   
 function calculateCohort(classRoom, maxCohortSize, totalStudents){
   var howManyCohort = totalStudents / maxCohortSize;
@@ -31,12 +32,42 @@ function calculateCohort(classRoom, maxCohortSize, totalStudents){
 
 var reopenForm = document.getElementById("reopenForm");
 // if (reopenForm) {
-  reopenForm.onsubmit = function () {
-    // cohortSizes.value = calculateCohort("a", cohortLimit.value,classA.value);
-    document.getElementById("cohortSizes").innerHTML = calculateCohort("a", cohortLimit.value,classA.value);
-    // console.log(this.cohortSizes.value);
-    return false;
+reopenForm.onsubmit = function () {
+  cohortSizes.value = calculateCohort("a", cohortLimit.value,classA.value);
+  // document.getElementById("cohortSizes").innerHTML = calculateCohort("a", cohortLimit.value,classA.value);
+  // console.log(this.cohortSizes.value);
+  return false;
+};
+// }
+
+function addField(){
+  var howManyClasses = document.getElementById("howManyClasses").value;
+  var classFields = document.getElementById("classFields");
+  while(classFields.hasChildNodes()){
+    classFields.removeChild(classFields.lastChild);
   };
+  for (i = 0; i < howManyClasses; i++){
+    classFields.appendChild(document.createTextNode("Class " + (i + 1 )));
+    classFields.id = i + 1;
+    // console.log(classFields.id);
+    var input = document.createElement("input");
+    input.type = "number";
+    classFields.appendChild(input);
+
+    classFields.appendChild(document.createElement("br"));
+    classFields.appendChild(document.createElement("br"));
+  };
+};
+
+
+// function addField(){
+//   var classFields = document.getElementById("classFields");
+//   var currentFields = classFields.childElementCount;
+//   var newFields = document.createElement("INPUT");
+//   newFields.setAttribute("type", "number");
+//   newFields.setAttribute("value", (currentFields + 1));
+//   newFields.setAttribute("id", (currentFields + 1));
+//   classFields.appendChild(newFields);
 // }
 
 // calculateCohort("a", 12, 28);

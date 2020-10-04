@@ -16,23 +16,33 @@
           </p> 
 
           <p>
+            <label for="howManyClasses">Number of Classes:</label>
+            <input id="howManyClasses" name="howManyClasses" type="number" />
+          </p>
+          
+          <button type="button" onclick="addField()">Add Classes</button>
+
+          <p id="classFields" />
+          <!-- <p id="fieldZero">
             <label for="classA">Class A:</label>
             <input id="classA" name="classA" type="number" />
-          </p>  
-
+          </p>   -->
+          
           <p>
             <input type="submit" value="Caculate Cohort Sizes" />
+            or
+		        <input type="reset" value="Reset" />
           </p>
-
-          <!-- <p>
+          
+          <p>
             <label for="cohortSizes">Cohort Sizes:</label>
-            <input id="cohortSizes" name="cohortSizes" />
-	        </p> -->
+            <input id="cohortSizes" name="cohortSizes" disabled="disabled" />
+	        </p>
 
-          <h1>Cohort Sizes:</h1>
+          <!-- <h1>Cohort Sizes:</h1>
           <p id="cohortSizes">
             
-          </p>
+          </p> -->
       </fieldset>
     </form>
 
