@@ -3,8 +3,17 @@
 // https://www.quirksmode.org/dom/domform.html
 // http://jsfiddle.net/t656N/1/
 
-var classAssignments = [];
-  
+var gradeName;
+var grade0Total = [];
+var grade1Total = [];
+var totalData = [];
+var unsortedData = [];
+
+function findGradeName(clicked_id){
+  gradeName = clicked_id;
+  console.log(gradeName);
+}
+
 function calculateCohort(classRoom, maxCohortSize, totalStudents, grade){
   var howManyCohort = totalStudents / maxCohortSize;
   if (Number.isInteger(howManyCohort) === true){
@@ -18,22 +27,21 @@ function calculateCohort(classRoom, maxCohortSize, totalStudents, grade){
       var remainder = totalStudents % unevenHowManyCohort;
       var lastCohortSize = Math.floor(intCohortSize) + remainder;
       // lastCohortSize printing out!
-      console.log(classRoom + "_" + lastCohortSize + "_" + grade);
-      classAssignments.push(classRoom + "_" + lastCohortSize + "_" + grade);
+      // console.log(classRoom + "_" + lastCohortSize + "_" + grade);
+      unsortedData.push(classRoom + "_" + lastCohortSize + "_" + grade);
       var remainingCohortSize = Math.floor(intCohortSize);
       var howManyCohort = howManyCohort - 1;
       var cohortSize = remainingCohortSize;
     };
   };
   for(var i = 0; i < howManyCohort; i++){
-      console.log(classRoom + "_" + cohortSize + "_" + grade);
-      classAssignments.push(classRoom + "_" + cohortSize + "_" + grade);
+      // console.log(classRoom + "_" + cohortSize + "_" + grade);
+      unsortedData.push(classRoom + "_" + cohortSize + "_" + grade);
   };
-  return classAssignments;
+  return unsortedData;
 };
 
-function addField(grade){
-  grade = "grade1";
+function addField(){
   window.howManyClasses = document.getElementById("howManyClasses").value;
   var classFields = document.getElementById("classFields");
   while(classFields.hasChildNodes()){
@@ -42,23 +50,33 @@ function addField(grade){
   for(i = 0; i < howManyClasses; i++){
     classFields.appendChild(document.createTextNode("Class " + (i + 1 )));
     window.input = document.createElement("input");
-    input.id = (i + 1) + "_" + grade;
+    input.id = (i + 1) + "_" + gradeName;
     input.type = "number";
     classFields.appendChild(input);
-  
     classFields.appendChild(document.createElement("br"));
-
   };
 };
 
 var reopenForm = document.getElementById("reopenForm");
-reopenForm.onsubmit = function () {
-  for(i = 0; i < howManyClasses; i++){
-    var x = document.getElementById((i + 1) + "_" + "grade1");
-    cohortSizes.value = calculateCohort((i + 1), cohortLimit.value, x.value, "grade1");  
-  };
-  console.log(classAssignments);
 
+reopenForm.onsubmit = function () {
+  // var grade = findGradeName(this.id);
+  for(i = 0; i < howManyClasses; i++){
+    var x = document.getElementById((i + 1) + "_" + gradeName);
+    cohortSizes.value = calculateCohort((i + 1), cohortLimit.value, x.value, gradeName);  
+    unsortedData.push;
+  };
+  var sortedData = sortArray(unsortedData);
+  var gradeCapacityPerDay = gradeCapacity(sortedData, 25);
+  distributeDays(sortedData, gradeCapacityPerDay);
+  // totalData.push(distributeDays);
+  console.log(grade0Total);
+  console.log(grade1Total);
+  var form = document.getElementById("reopenForm");
+  var fieldset = document.getElementsByTagName("fieldset")
+  var classFields = document.getElementById("classFields");
+  fieldset.removeChild(classFields);
+  form.reset();
   return false;
 };
 
@@ -82,6 +100,7 @@ function sortArray(rawData){
 
 function gradeCapacity(sortedData, percentNum){
   var sum = 0;
+  // var percent = parseInt(percent);
   var convertToDecimal = percentNum / 100;
   for(i = 0; i < sortedData.length; i++){
     var a = sortedData[i].split("_", 2);
@@ -110,24 +129,21 @@ function distributeDays(sortedData, max){
       marker.push(i + 1);
     }
   }
-  console.log(marker)
   for (i = 0; i < marker.length; i++){
     if (i == marker.length - 1){
       // console.log(sortedData[i]);
       break;
-    }0
+    }
+    
     var a = sortedData.slice(marker[i], marker[i + 1]);
-    console.log(a);
+    switch (gradeName) {
+      case "kindergarden":
+        grade0Total.push(a);
+        break;
+      case "firstGrade":
+        grade1Total.push(a);
+        break;
+    }
+    // console.log(grade0Total);
   }
 }
-
-testArray = [
-  "1_10_grade1",
-  "2_11_grade1",
-  "1_13_grade1",
-  "2_12_grade1"
-];
-
-var gradeCapacityPerDay = gradeCapacity(testArray, 50);
-console.log(gradeCapacityPerDay);
-distributeDays(testArray, gradeCapacityPerDay);

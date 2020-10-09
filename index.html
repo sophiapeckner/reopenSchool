@@ -7,22 +7,29 @@
     <link href="style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
+    <button type="button" id="kindergarden" onclick="findGradeName(this.id)">K</button>
+    <button type="button" id="firstGrade" onclick="findGradeName(this.id)">Grade 1</button>
+
     <form id="reopenForm" action="">
       <fieldset>
         <legend>Input Class Size</legend>
           <p>
             <label for="cohortLimit">Limit Cohort Size:</label>
-            <input id="cohortLimit" name="cohortLimit" type="number" />
+            <input id="cohortLimit" name="cohortLimit" type="number" required/>
           </p> 
 
           <p>
             <label for="howManyClasses">Number of Classes:</label>
-            <input id="howManyClasses" name="howManyClasses" type="number" />
+            <input id="howManyClasses" name="howManyClasses" type="number" required/>
           </p>
           
           <button type="button" onclick="addField()">Add Classes</button>
 
           <p id="classFields" />
+          <!-- <p id="fieldZero">
+            <label for="classA">Class A:</label>
+            <input id="classA" name="classA" type="number" />
+          </p>   -->
           
           <p>
             <input type="submit" value="Caculate Cohort Sizes" />
@@ -34,6 +41,11 @@
             <label for="cohortSizes">Cohort Sizes:</label>
             <input id="cohortSizes" name="cohortSizes" disabled="disabled" />
 	        </p>
+
+          <!-- <h1>Cohort Sizes:</h1>
+          <p id="cohortSizes">
+            
+          </p> -->
       </fieldset>
     </form>
 
