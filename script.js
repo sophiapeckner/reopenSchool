@@ -2,6 +2,7 @@
 // https://www.sitepoint.com/community/t/math-formula-input-form/6956/3
 // https://www.quirksmode.org/dom/domform.html
 // http://jsfiddle.net/t656N/1/
+// https://stackoverflow.com/questions/4825295/javascript-onclick-to-get-the-id-of-the-clicked-button/4825325
 
 var gradeName;
 var grade0Total = [];
@@ -67,16 +68,19 @@ reopenForm.onsubmit = function () {
     unsortedData.push;
   };
   var sortedData = sortArray(unsortedData);
-  var gradeCapacityPerDay = gradeCapacity(sortedData, 25);
+  var gradeCapacityPerDay = gradeCapacity(sortedData, 50);
   distributeDays(sortedData, gradeCapacityPerDay);
   // totalData.push(distributeDays);
   console.log(grade0Total);
   console.log(grade1Total);
   var form = document.getElementById("reopenForm");
-  var fieldset = document.getElementsByTagName("fieldset")
-  var classFields = document.getElementById("classFields");
-  fieldset.removeChild(classFields);
+  // var fieldset = document.getElementsByTagName("fieldset")
+  // var classFields = document.getElementById("classFields");
+  // fieldset.removeChild(classFields);
+  document.getElementById("classFields").innerHTML = "";
   form.reset();
+
+  unsortedData = [];
   return false;
 };
 
@@ -100,7 +104,6 @@ function sortArray(rawData){
 
 function gradeCapacity(sortedData, percentNum){
   var sum = 0;
-  // var percent = parseInt(percent);
   var convertToDecimal = percentNum / 100;
   for(i = 0; i < sortedData.length; i++){
     var a = sortedData[i].split("_", 2);
@@ -114,6 +117,8 @@ function gradeCapacity(sortedData, percentNum){
 function distributeDays(sortedData, max){
   var sum = 0;
   var marker = [];
+  grade1Total = [];
+  grade0Total = [];
   for(i = 0; i < sortedData.length; i++){
     var a = sortedData[i].split("_", 2);
     var b = parseInt(a[1]);
@@ -144,6 +149,12 @@ function distributeDays(sortedData, max){
         grade1Total.push(a);
         break;
     }
-    // console.log(grade0Total);
+  }
+  // console.log(grade0Total);
+}
+
+function assignDays(totalArray){
+  for (i = 0; i < totalArray.length; i++){
+    
   }
 }
