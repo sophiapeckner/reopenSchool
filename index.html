@@ -7,29 +7,35 @@
     <link href="style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <button type="button" id="kindergarden" onclick="findGradeName(this.id)">K</button>
+    <button type="button" id="kindergarden" onclick="findGradeName(this.id)">Kindergarden</button>
     <button type="button" id="firstGrade" onclick="findGradeName(this.id)">Grade 1</button>
-
+    <button type="button" id="secondGrade" onclick="findGradeName(this.id)">Grade 2</button>
+    <button type="button" id="thirdGrade" onclick="findGradeName(this.id)">Grade 3</button>
+    <button type="button" id="fourthGrade" onclick="findGradeName(this.id)">Grade 4</button>
+    <button type="button" id="fifthGrade" onclick="findGradeName(this.id)">Grade 5</button>
+    
     <form id="reopenForm" action="">
       <fieldset>
         <legend>Input Class Size</legend>
+          
+          <div id="fields">
+            <p>Select Prefered Class Capacity:</p>
+
+            <input type="radio" id="twentyFive" name="capacityPercent" value="25" checked>
+            <label for="twentyFive">25%</label><br>
+            <input type="radio" id="fifty" name="capacityPercent" value="50">
+            <label for="fifty">50%</label>
+          </div>
+
           <p>
             <label for="cohortLimit">Limit Cohort Size:</label>
-            <input id="cohortLimit" name="cohortLimit" type="number" required/>
+            <input id="cohortLimit" name="cohortLimit" type="number" placeholder="12" required/>
           </p> 
 
           <p>
-            <label for="howManyClasses">Number of Classes:</label>
-            <input id="howManyClasses" name="howManyClasses" type="number" required/>
-          </p>
-          
-          <button type="button" onclick="addField()">Add Classes</button>
-
-          <p id="classFields" />
-          <!-- <p id="fieldZero">
-            <label for="classA">Class A:</label>
-            <input id="classA" name="classA" type="number" />
-          </p>   -->
+            <label for="totalStudentsPerGrade">Total students for <span id="changeGrade">Grade: </span></label>
+            <input id="totalStudentsPerGrade" name="totalStudentsPerGrade" type="number" required/>
+          </p> 
           
           <p>
             <input type="submit" value="Caculate Cohort Sizes" />
@@ -37,19 +43,21 @@
 		        <input type="reset" value="Reset" />
           </p>
           
-          <p>
-            <label for="cohortSizes">Cohort Sizes:</label>
-            <input id="cohortSizes" name="cohortSizes" disabled="disabled" />
-	        </p>
-
-          <!-- <h1>Cohort Sizes:</h1>
-          <p id="cohortSizes">
-            
-          </p> -->
+          <div id="container"> </div>
       </fieldset>
     </form>
 
-    </form>
+    <table id="tableSchedule" style="width:100%" border>
+      <tr>
+        <th></th>
+        <th>Monday</th>
+        <th>Tuesday</th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th>Friday</th>
+      </tr>
+    </table>
+
     <script src="script.js"></script>
   </body>
 </html>

@@ -1,160 +1,172 @@
-// CREDIT:
-// https://www.sitepoint.com/community/t/math-formula-input-form/6956/3
-// https://www.quirksmode.org/dom/domform.html
-// http://jsfiddle.net/t656N/1/
-// https://stackoverflow.com/questions/4825295/javascript-onclick-to-get-the-id-of-the-clicked-button/4825325
-
-var gradeName;
-var grade0Total = [];
-var grade1Total = [];
-var totalData = [];
+var gradeName = "";
 var unsortedData = [];
+var checkedCapacity;
+m = new Map();
+var reopenForm = document.getElementById("reopenForm");
 
 function findGradeName(clicked_id){
   gradeName = clicked_id;
-  console.log(gradeName);
+  document.getElementById("changeGrade").innerHTML = gradeName + ":";
 }
 
-function calculateCohort(classRoom, maxCohortSize, totalStudents, grade){
-  var howManyCohort = totalStudents / maxCohortSize;
+function displayRadioValue() { 
+  var element = document.getElementsByName("capacityPercent"); 
+  for(i = 0; i < element.length; i++) { 
+    if(element[i].checked){
+      checkedCapacity = element[i].value; 
+    }
+  } 
+  return checkedCapacity;
+}
+
+function gradeCapacity(){
+  checkedCapacity = displayRadioValue();
+  var percent = parseInt(checkedCapacity);
+  var convertToDecimal = percent / 100;
+  var totalStudentsPerGrade = document.getElementById("totalStudentsPerGrade").value;
+  var gradeCapacityPerDay = Math.ceil(totalStudentsPerGrade * convertToDecimal);
+  return gradeCapacityPerDay;
+}
+
+function calculateCohort(maxCohortSize, studentsPerDay, grade){
+  var howManyCohort = studentsPerDay / maxCohortSize;
   if (Number.isInteger(howManyCohort) === true){
     var cohortSize = maxCohortSize;
   } else {
     var unevenHowManyCohort = Math.ceil(howManyCohort);
-    var intCohortSize = totalStudents / unevenHowManyCohort;
+    var intCohortSize = studentsPerDay / unevenHowManyCohort;
     if (Number.isInteger(intCohortSize) === true){
       var cohortSize = intCohortSize;
     } else {
-      var remainder = totalStudents % unevenHowManyCohort;
+      var remainder = studentsPerDay % unevenHowManyCohort;
       var lastCohortSize = Math.floor(intCohortSize) + remainder;
       // lastCohortSize printing out!
-      // console.log(classRoom + "_" + lastCohortSize + "_" + grade);
-      unsortedData.push(classRoom + "_" + lastCohortSize + "_" + grade);
+      unsortedData.push(lastCohortSize + "_" + grade);
       var remainingCohortSize = Math.floor(intCohortSize);
       var howManyCohort = howManyCohort - 1;
       var cohortSize = remainingCohortSize;
     };
   };
   for(var i = 0; i < howManyCohort; i++){
-      // console.log(classRoom + "_" + cohortSize + "_" + grade);
-      unsortedData.push(classRoom + "_" + cohortSize + "_" + grade);
+      unsortedData.push(cohortSize + "_" + grade);
   };
   return unsortedData;
 };
 
-function addField(){
-  window.howManyClasses = document.getElementById("howManyClasses").value;
-  var classFields = document.getElementById("classFields");
-  while(classFields.hasChildNodes()){
-    classFields.removeChild(classFields.lastChild);
-  };
-  for(i = 0; i < howManyClasses; i++){
-    classFields.appendChild(document.createTextNode("Class " + (i + 1 )));
-    window.input = document.createElement("input");
-    input.id = (i + 1) + "_" + gradeName;
-    input.type = "number";
-    classFields.appendChild(input);
-    classFields.appendChild(document.createElement("br"));
-  };
-};
+function distribute(data, capacity, grade){
+  createArray();
+  m[grade + "_mon"] = [];
+  m[grade + "_tues"] = [];
+  m[grade + "_thur"] = [];
+  m[grade + "_fri"] = [];
+  var schedule = [];
+  var addId = [];
+  var rotate = 0;
+  switch (capacity){
+    case "20":
+      rotate = 5;
+      break;
+    case "25":
+      rotate = 4;
+      break;
+    case "50":
+      rotate = 2;
+      break;
+  }
+  var raw = [];
+  for (i = 0; i < rotate; i++){
+    for (j = 0; j < data.length; j++){
+      var a = data[j];
+      raw.push(a);
+    }
+  }
+  for (i = 0; i < raw.length; i++){
+    addId.push((i + 1) + "_" + raw[i]);
+  }
+  for (i = 0; i < addId.length; i = i + data.length){
+    if (i == addId.length){
+      break;
+    }
+    var b = addId.slice(i, (i + data.length))
+    schedule.push(b)
+  }
+  if (capacity === "25"){
+    m[grade + "_mon"] = schedule[0];
+    m[grade + "_tues"] = schedule[1];
+    m[grade + "_wed"] = [];
+    m[grade + "_thur"] = schedule[2];
+    m[grade + "_fri"] = schedule[3];
+  } else if (capacity === "50"){
+    m[grade + "_mon"] = schedule[0];
+    m[grade + "_tues"] = schedule[1];
+    m[grade + "_wed"] = [];
+    m[grade + "_thur"] = schedule[0];
+    m[grade + "_fri"] = schedule[1];
+  }
+  // console.log(m[grade + "_mon"])
+  // console.log(m[grade + "_tues"])
+  // console.log(m[grade + "_thur"])
+  // console.log(m[grade + "_fri"])
+}
 
-var reopenForm = document.getElementById("reopenForm");
+function beautifyData(tableCellData){
+  var finalTableCellData = "";
+  // console.log(tableCellData)
+  for (i = 0; i < tableCellData.length; i++) {
+    var splitData = tableCellData[i].split("_", 2);
+    var id = splitData[0];
+    var cohortSize = splitData[1];
+    finalTableCellData = finalTableCellData + ("cohort" + id + ": " + cohortSize + " students" + "<br>");
+  }
+  return finalTableCellData;
+}
+
+function createTable(){
+  var table = document.getElementById("tableSchedule");
+  var b = ["kindergarden", "firstGrade", "secondGrade", "thirdGrade", "fourthGrade", "fifthGrade"];
+  for (i of b){
+    if (m[i+"_mon"].length == 0 ) {
+      continue;
+    }
+    var row = table.insertRow(1);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+    var cell4 = row.insertCell(3);
+    var cell5 = row.insertCell(4);
+    var cell6 = row.insertCell(5);
+    cell1.innerHTML = i;
+    cell2.innerHTML = beautifyData(m[gradeName+"_mon"]);
+    cell3.innerHTML = beautifyData(m[gradeName+"_tues"]);
+    cell4.innerHTML = "Off Day";
+    cell5.innerHTML = beautifyData(m[gradeName+"_thur"]);
+    cell6.innerHTML = beautifyData(m[gradeName+"_fri"]);
+  }
+}
+
+function createArray(){
+  var a = ["mon", "tues", "wed", "thur", "fri"];
+  var b = ["kindergarden", "firstGrade", "secondGrade", "thirdGrade", "fourthGrade", "fifthGrade"];
+  for (i of a){
+    for (j of b){
+      var x = j + "_" + i;
+      m[x] = [];
+    }
+  }
+}
 
 reopenForm.onsubmit = function () {
-  // var grade = findGradeName(this.id);
-  for(i = 0; i < howManyClasses; i++){
-    var x = document.getElementById((i + 1) + "_" + gradeName);
-    cohortSizes.value = calculateCohort((i + 1), cohortLimit.value, x.value, gradeName);  
-    unsortedData.push;
-  };
-  var sortedData = sortArray(unsortedData);
-  var gradeCapacityPerDay = gradeCapacity(sortedData, 50);
-  distributeDays(sortedData, gradeCapacityPerDay);
-  // totalData.push(distributeDays);
-  console.log(grade0Total);
-  console.log(grade1Total);
-  var form = document.getElementById("reopenForm");
-  // var fieldset = document.getElementsByTagName("fieldset")
-  // var classFields = document.getElementById("classFields");
-  // fieldset.removeChild(classFields);
-  document.getElementById("classFields").innerHTML = "";
-  form.reset();
-
+  if (gradeName === ""){
+    document.getElementById("container").innerHTML = "Uhoh! Please click on a button labeled K - Grade 6"
+    return false;
+  }
+  document.getElementById("container").innerHTML = ""
+  var cohortLimit = document.getElementById("cohortLimit").value;
+  var studentsPerDay = gradeCapacity();
+  calculateCohort(cohortLimit, studentsPerDay, gradeName);
+  distribute(unsortedData, checkedCapacity, gradeName);
   unsortedData = [];
+  createTable();
+  reopenForm.reset();
   return false;
-};
-
-function sortArray(rawData){
-  for(i = 0; i < rawData.length; i++){
-    if(i == rawData.length - 1){
-      break;
-    }
-       
-    var a = rawData[i].split("_", 1);
-    var b = rawData[i+1].split("_", 1);
-    
-    if (a[0] === b[0]){
-      var tmp = rawData[i+1];
-      rawData.splice(i+1, 1);
-      rawData.splice(rawData.length, 0, tmp);
-    }
-  };
-  return rawData; 
-};
-
-function gradeCapacity(sortedData, percentNum){
-  var sum = 0;
-  var convertToDecimal = percentNum / 100;
-  for(i = 0; i < sortedData.length; i++){
-    var a = sortedData[i].split("_", 2);
-    var b = parseInt(a[1]);
-    sum = sum + b;
-  }
-  var gradeCapacityPerDay = Math.ceil(sum * convertToDecimal);
-  return gradeCapacityPerDay;
-}
-
-function distributeDays(sortedData, max){
-  var sum = 0;
-  var marker = [];
-  grade1Total = [];
-  grade0Total = [];
-  for(i = 0; i < sortedData.length; i++){
-    var a = sortedData[i].split("_", 2);
-    var b = parseInt(a[1]);
-    sum = sum + b;
-    if(i == 0 && sum < max){
-      marker.push(i);
-    }
-    if(sum >= max){
-      marker.push(i);
-      sum = b;
-    }
-    if (i == sortedData.length - 1){
-      marker.push(i + 1);
-    }
-  }
-  for (i = 0; i < marker.length; i++){
-    if (i == marker.length - 1){
-      // console.log(sortedData[i]);
-      break;
-    }
-    
-    var a = sortedData.slice(marker[i], marker[i + 1]);
-    switch (gradeName) {
-      case "kindergarden":
-        grade0Total.push(a);
-        break;
-      case "firstGrade":
-        grade1Total.push(a);
-        break;
-    }
-  }
-  // console.log(grade0Total);
-}
-
-function assignDays(totalArray){
-  for (i = 0; i < totalArray.length; i++){
-    
-  }
 }
