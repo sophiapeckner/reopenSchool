@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Assistant&display=swap');
+
+/* general */
+body{
+  font-size: 18px;
+  font-family: 'Assistant', sans-serif;
+}
+
+/* top nav */
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #e7e7e7;
+  background-color: #f3f3f3;
+}
+
+li {
+  float: right;
+}
+
+li a {
+  display: block;
+  color: #666;
+  text-align: center;
+  padding: 7px 8px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #ddd;
+}
+
+li a.active {
+  color: black;
+  background-color: rgb(193, 255, 145);
+}
+
+
+/* FAQ */
+h1, p{
+  width: 85%;
+  margin: auto;
+  margin-top: 15px;
+}
+
+p{
+  padding-left: 35px;
+  border-left: 2px solid black;
+}
+
+h1{
+  background-color:rgb(193, 255, 145);
+  font-size: 24px;
+}

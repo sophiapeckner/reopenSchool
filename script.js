@@ -1,3 +1,9 @@
+// CREDIT:
+// https://www.sitepoint.com/community/t/math-formula-input-form/6956/3
+// https://www.quirksmode.org/dom/domform.html
+// http://jsfiddle.net/t656N/1/
+// https://stackoverflow.com/questions/4825295/javascript-onclick-to-get-the-id-of-the-clicked-button/4825325
+
 var gradeName = "";
 var unsortedData = [];
 var checkedCapacity;
@@ -135,7 +141,7 @@ function createTable(){
     var cell4 = row.insertCell(3);
     var cell5 = row.insertCell(4);
     var cell6 = row.insertCell(5);
-    cell1.innerHTML = i;
+    cell1.innerHTML = i + "<br>" + "cohort limit: " + cohortLimit + "<br>" + "capacity: " + checkedCapacity + "%";
     cell2.innerHTML = beautifyData(m[gradeName+"_mon"]);
     cell3.innerHTML = beautifyData(m[gradeName+"_tues"]);
     cell4.innerHTML = "Off Day";
@@ -157,16 +163,39 @@ function createArray(){
 
 reopenForm.onsubmit = function () {
   if (gradeName === ""){
-    document.getElementById("container").innerHTML = "Uhoh! Please click on a button labeled K - Grade 6"
+    // document.getElementById("container").innerHTML = "Uhoh! Please click on a button labeled K - Grade 6"
+    document.getElementById("container").innerHTML = '<span style="background-color: rgb(255, 173, 173)"> Uh oh! Please click on a button labeled Kindergarden - Grade 5</span>'
     return false;
   }
   document.getElementById("container").innerHTML = ""
-  var cohortLimit = document.getElementById("cohortLimit").value;
+  window.cohortLimit = document.getElementById("cohortLimit").value;
   var studentsPerDay = gradeCapacity();
   calculateCohort(cohortLimit, studentsPerDay, gradeName);
   distribute(unsortedData, checkedCapacity, gradeName);
   unsortedData = [];
   createTable();
+  changeColor(gradeName);
   reopenForm.reset();
   return false;
+}
+
+// Minor Details (css related!)
+
+function questionMarkPopup1() {
+  var popup1 = document.getElementById("myPopup1");
+  popup1.classList.toggle("show");
+}
+
+function questionMarkPopup2() {
+  var popup2 = document.getElementById("myPopup2");
+  popup2.classList.toggle("show");
+}
+
+function questionMarkPopup3() {
+  var popup3 = document.getElementById("myPopup3");
+  popup3.classList.toggle("show");
+}
+
+function changeColor(id){
+    document.getElementById(gradeName).style.background = 'rgb(193, 255, 145)';
 }

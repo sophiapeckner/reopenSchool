@@ -3,10 +3,15 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>Schooling Reopening Calculator</title>
+    <title>Reopen School Scientific Calculator</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
+    <ul>
+      <li><a class="active" href="index.html">Reopen School Calculator</a></li>
+      <li><a href="background.html">Background Info</a></li>
+    </ul>
+
     <button type="button" id="kindergarden" onclick="findGradeName(this.id)">Kindergarden</button>
     <button type="button" id="firstGrade" onclick="findGradeName(this.id)">Grade 1</button>
     <button type="button" id="secondGrade" onclick="findGradeName(this.id)">Grade 2</button>
@@ -16,43 +21,58 @@
     
     <form id="reopenForm" action="">
       <fieldset>
-        <legend>Input Class Size</legend>
-          
-          <div id="fields">
-            <p>Select Prefered Class Capacity:</p>
+        <legend>Fill In Following Fields</legend>
 
-            <input type="radio" id="twentyFive" name="capacityPercent" value="25" checked>
+          <div id="fields">
+            <p>Select Prefered <a href="background.html" target="_blank">School Capacity:</a>
+
+              <span class="popup" onclick="questionMarkPopup1()"> <img src="question_mark_icon.png" alt="question mark icon">
+              <span class="popuptext" id="myPopup1">% of student population at school per day</span>
+              </span>
+
+            </p>
+
+            <input type="radio" id="twentyFive" name="capacityPercent" value="25">
             <label for="twentyFive">25%</label><br>
             <input type="radio" id="fifty" name="capacityPercent" value="50">
             <label for="fifty">50%</label>
           </div>
 
+
           <p>
-            <label for="cohortLimit">Limit Cohort Size:</label>
+            <label for="cohortLimit">Limit <a href="background.html" target="_blank">Cohort Size:</a></label>
             <input id="cohortLimit" name="cohortLimit" type="number" placeholder="12" required/>
+
+             <span class="popup" onclick="questionMarkPopup2()"> <img src="question_mark_icon.png" alt="question mark icon">
+            <span class="popuptext" id="myPopup2">max. students per cohort <br> recommend 12 students per</span>
+
           </p> 
 
           <p>
-            <label for="totalStudentsPerGrade">Total students for <span id="changeGrade">Grade: </span></label>
+            <label for="totalStudentsPerGrade">Total students for <span id="changeGrade">Grade:</span> </label>
             <input id="totalStudentsPerGrade" name="totalStudentsPerGrade" type="number" required/>
           </p> 
           
           <p>
-            <input type="submit" value="Caculate Cohort Sizes" />
+            <input type="submit" class="specialButtons" value="Caculate Cohort Sizes" />
             or
-		        <input type="reset" value="Reset" />
+		        <input type="reset" class="specialButtons" value="Reset" />
           </p>
           
           <div id="container"> </div>
       </fieldset>
     </form>
 
-    <table id="tableSchedule" style="width:100%" border>
-      <tr>
+    <table id="tableSchedule" style="width:100%">
+      <tr bold>
         <th></th>
         <th>Monday</th>
         <th>Tuesday</th>
-        <th>Wednesday</th>
+        <th><a href="background.html" target="_blank">Wednesday</a>
+          <span class="popup" onclick="questionMarkPopup3()"> <img src="question_mark_icon.png" alt="question mark icon">
+          <span class="popuptext" id="myPopup3"> Ex: Cleaning, Extra help for students in need</span>
+          </span>
+        </th>
         <th>Thursday</th>
         <th>Friday</th>
       </tr>
