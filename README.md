@@ -4,8 +4,8 @@
 
 * An application for school administrators to gauge cohorts needed per week, students per cohort etc.
 
-### Screenshots
-![Image of Yaktocat](explorer_school_reopening.png)
+### Screenshot
+![Screenshot of School Reopening Calculator](explorer_school_reopening.png)
 
 ### Features
 
